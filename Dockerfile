@@ -14,7 +14,7 @@ RUN echo 'export SHIPPABLE_NODE_VERSION=v16.9.1' >> /etc/profile && \
         nvm use default &&  which node
 ENV PATH $PATH:/home/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin
 RUN echo 'export PATH=$PATH:/home/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin' >> /etc/profile && \
-    mkdir /home/.catche && npm config set cache /home/.cache && \
+    mkdir /home/.catche && ln -s /home/.catche /home/ubuntu/.catche && npm config set cache /home/.cache && \
     . $NVM_DIR/nvm.sh && cd /home && npm init -y && npm install -g node-gyp && \
     npm install socket.io socket.io-client ws express http-proxy bagpipe eventproxy \
     chokidar request nodemailer await-signal log4js moment cron playwright-chromium
