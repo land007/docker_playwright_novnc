@@ -22,6 +22,13 @@ RUN apt-get install -y libxtst-dev libpng++-dev make g++ libenchant1c2a
 RUN . $NVM_DIR/nvm.sh && cd /home && npm install robotjs playwright-video
 ADD node /home/ubuntu
 
+
+
+RUN echo $(date "+%Y-%m-%d_%H:%M:%S") >> /.image_times && \
+	echo $(date "+%Y-%m-%d_%H:%M:%S") > /.image_time && \
+	echo "land007/playwright-novnc" >> /.image_names && \
+	echo "land007/playwright-novnc" > /.image_name
+
 #RUN apt-get install -y gawk bison
 #RUN strings  /lib/aarch64-linux-gnu/libc.so.6 | grep GLIBC_
 #ADD glibc-2.29.tar.gz /opt
