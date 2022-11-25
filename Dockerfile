@@ -17,11 +17,11 @@ RUN echo 'export PATH=$PATH:/home/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin
     mkdir /home/.catche && ln -s /home/.catche /home/ubuntu/.catche && npm config set cache /home/.cache && \
     . $NVM_DIR/nvm.sh && cd /home && npm init -y && npm install -g node-gyp && \
     npm install socket.io socket.io-client ws express http-proxy bagpipe eventproxy \
-    chokidar request nodemailer await-signal log4js moment cron playwright-chromium
-RUN apt-get install -y libxtst-dev libpng++-dev make g++ libenchant1c2a
+    chokidar request nodemailer await-signal log4js moment cron playwright
+RUN apt-get update -y && apt-get install -y libxtst-dev libpng++-dev make g++ libenchant1c2a ffmpeg
 RUN . $NVM_DIR/nvm.sh && cd /home && npm install robotjs playwright-video
 ADD node /home/ubuntu
-
+ENV FFMPEG_PATH /usr/bin/ffmpeg
 
 
 RUN echo $(date "+%Y-%m-%d_%H:%M:%S") >> /.image_times && \
