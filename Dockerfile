@@ -1,7 +1,8 @@
-FROM land007/ubuntu-unity-novnc:20.04
+FROM land007/ubuntu-unity-novnc:22.04
 
 MAINTAINER Yiqiu Jia <yiqiujia@hotmail.com>
 
+RUN apt-get update -y && apt-get install -y build-essential python3 python3-pip libxtst-dev libpng++-dev make g++ libenchant-2-2 ffmpeg
 ENV NVM_DIR=/home/.nvm
 RUN mkdir /home/.nvm && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 #ADD install.sh /home
@@ -18,11 +19,16 @@ RUN echo 'export PATH=$PATH:/home/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin
     . $NVM_DIR/nvm.sh && cd /home && npm init -y && npm install -g node-gyp && \
     npm install socket.io socket.io-client ws express http-proxy bagpipe eventproxy \
     chokidar request nodemailer await-signal log4js moment cron playwright
-RUN apt-get update -y && apt-get install -y libxtst-dev libpng++-dev make g++ libenchant1c2a ffmpeg
+
+#RUN . $NVM_DIR/nvm.sh && cd /home && rm -rf node_modules && npm cache clean --force
+
 RUN . $NVM_DIR/nvm.sh && cd /home && npm install robotjs playwright-video
+RUN npx playwright install
 ADD node /home/ubuntu
 ENV FFMPEG_PATH /usr/bin/ffmpeg
 
+#RUN pip3 install playwright
+#RUN python3 -m playwright install
 
 RUN echo $(date "+%Y-%m-%d_%H:%M:%S") >> /.image_times && \
 	echo $(date "+%Y-%m-%d_%H:%M:%S") > /.image_time && \
@@ -37,8 +43,8 @@ RUN echo $(date "+%Y-%m-%d_%H:%M:%S") >> /.image_times && \
 #RUN strings  /lib/aarch64-linux-gnu/libc.so.6 | grep GLIBC_
 
 
-#docker build -t land007/playwright-novnc:20.04 .
-#> docker buildx build --platform linux/amd64,linux/arm64/v8,linux/arm/v7 -t land007/playwright-novnc:20.04 --push .
+#docker build -t land007/playwright-novnc:22.04 .
+#> docker buildx build --platform linux/amd64,linux/arm64/v8,linux/arm/v7 -t land007/playwright-novnc:22.04 --push .
 #> docker buildx build --platform linux/amd64,linux/arm64/v8 -t land007/playwright-novnc:20.04 --push .
 #> docker pull --platform=arm64 land007/playwright-novnc:20.04
 #sudo docker exec $CONTAINER_ID cat /home/ubuntu/password.txt
